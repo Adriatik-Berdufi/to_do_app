@@ -12,10 +12,11 @@
     "dotenv": "^16.4.5",
     "vue": "^3.4.29",
     "vue-router": "^4.4.0",
-    "vuetify": "^3.6.12" ,
+    "vuetify": "^3.6.12",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "@mdi/font": "^7.4.47",
     "@vitejs/plugin-vue": "^5.0.5",
     "vite": "^5.3.1"
   }
