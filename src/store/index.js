@@ -3,6 +3,7 @@ import { reactive } from 'vue';
 
 export const store = reactive({
   tasks: [],
+  archivedTasks: [],
   editingTaskIndex: -1,
 
   addTask(task) {
@@ -39,5 +40,12 @@ export const store = reactive({
 
   stopEdit() {
     this.editingTaskIndex = -1;
+  },
+  archiveTask(index) {
+    if (index >= 0 && index < this.tasks.length && this.tasks[index].completed) {
+      const archivedTask = this.tasks.splice(index, 1)[0];
+      this.archivedTasks.push(archivedTask);
+    }
   }
+  
 });

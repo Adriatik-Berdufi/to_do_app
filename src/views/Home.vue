@@ -58,6 +58,16 @@ export default {
       store.startEdit(index); // Avvia la modalità di modifica per il task selezionato
       this.newTask = store.tasks[index].name; // Inizializza il campo di input con il nome del task
       this.dialog = true; // Apri la modale
+    },
+    // Manda il task nel archivio 
+    archiveTask(index) { 
+      if (index >= 0 && index < store.tasks.length && store.tasks[index].completed) {
+        const archivedTask = store.tasks.splice(index, 1)[0];
+        store.archivedTasks.push(archivedTask);
+
+        // Naviga verso complited se voglio che mi porti diretamente a quella route
+        //this.$router.push({ name: 'Completed' });
+      }
     }
   }
 };
@@ -96,6 +106,7 @@ export default {
                 <v-icon class="mx-2" @click="startEditing(index)">mdi-pencil</v-icon>
                 <v-icon class="mx-2" @click="completeTask(index)" v-if="!task.completed">mdi-check-circle</v-icon>
                 <v-icon class="mx-2" @click="undoCompleteTask(index)" v-if="task.completed">mdi-check-circle-outline</v-icon>
+                <v-icon class="mx-2" @click="archiveTask(index)" v-if="task.completed">mdi-archive</v-icon>
                 <v-icon class="mx-2" @click="deleteTask(index)">mdi-delete</v-icon>
               </div>
             </v-list-item-content>
