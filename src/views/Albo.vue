@@ -6,29 +6,42 @@
         data(){
             return{
                 comics:{},
+                nr: 100,
             };
         },
         created() {
-            axios.get('/xkcd/100/info.0.json')
-                .then(response => {
-                    this.comics = response.data;
-                    console.log(this.comics);
-                })
-                .catch(error => {
-                    console.error('Errore nella risp del sito:', error);
-                });
+            this.loadComic(this.nr);
         },
         methods:{
             formatDate(day, month, year) {
                 return `${day}/${month}/${year}`;
             },
+            loadComic(num){
+                axios.get(`/xkcd/${num}/info.0.json`)
+                .then(response => {
+                    this.comics = response.data;
+                    //console.log(this.comics);
+                })
+                .catch(error => {
+                    console.error('Errore nella risp del sito:', error);
+                });
+
+            },
+            previousComic() {
+                    this.nr = --this.nr ;
+                    this.loadComic(this.nr); 
+            },
+            nextsComic() {
+                this.nr = ++this.nr ;
+                    this.loadComic(this.nr); 
+            }
         }
     }
 </script>
 <template>
 
         <h1 class="text-center my-5">Albo</h1>
-     
+        
         <v-card class=" ms-auto me-auto text-center w-50 "  v-if="comics.num">
             <p class="text-start mt-3 ms-3"><strong>Nr della vignetta:</strong> {{ comics.num }}</p>
             <p class="text-start mt-3 ms-3"><strong>Titolo della vignetta:</strong> {{ comics.safe_title }}</p>
@@ -37,6 +50,15 @@
             
         </v-card>
         <p v-else>Caricamento...</p> 
+
+        <div class="mt-5 text-center">
+            <v-btn  @click="previousComic" class="me-2">
+                <v-icon>mdi-chevron-left</v-icon> Prev
+            </v-btn>
+            <v-btn @click="nextsComic" >
+                Next <v-icon>mdi-chevron-right</v-icon>
+            </v-btn>
+        </div>
 
  
 </template>
