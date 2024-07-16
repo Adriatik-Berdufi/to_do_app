@@ -6,7 +6,9 @@ export default {
   data() {
     return {
       newTask: '',
-      dialog: false // Stato della modale
+      dialog: false, // Stato della modale
+      username: '',
+      tasks: []
     };
   },
   computed: {
@@ -29,10 +31,16 @@ export default {
 
     addTask() {
       if (this.newTask.trim()) {
-        store.addTask(this.newTask.trim());
+        const task = {
+          name: this.newTask.trim(),
+          completed: false,
+          username: this.username
+        };
+        console.log('Task to add:', task);
+        store.addTask(task);
         this.newTask = '';
       }
-    },
+    },  
 
     editTask() {
       if (this.editingTaskIndex >= 0 && this.editingTaskIndex < store.tasks.length) {
@@ -68,7 +76,14 @@ export default {
         // Naviga verso complited se voglio che mi porti diretamente a quella route
         //this.$router.push({ name: 'Completed' });
       }
-    }
+    },
+    logout() {
+      localStorage.removeItem('username');
+      this.$router.push({ name: 'Login' });
+    },
+  },
+  created(){
+    this.username = localStorage.getItem('username') || '';
   }
 };
 </script>
@@ -76,9 +91,10 @@ export default {
   <div>
     <v-container>
       <h1>To Do List</h1>
-
       <!-- Pulsante per aprire la modale -->
-      <v-btn class="mb-3" @click="dialog = !dialog" color="primary">Aggiungi Task</v-btn>
+      <v-btn class="mb-3 me-3" @click="dialog = !dialog" color="primary">Aggiungi Task</v-btn>
+      <!-- Pulsante per logout -->
+      <v-btn class="mb-3 ms-3" @click="logout" color="primary">Logout</v-btn>
 
       <!-- Modale per l'inserimento del task -->
       <v-dialog v-model="dialog" max-width="500px">
@@ -100,8 +116,8 @@ export default {
         <v-list>
           <v-list-item v-for="(task, index) in store.tasks" :key="index">
             <v-list-item-content class="d-flex justify-space-between">
-              <v-text v-if="!task.completed">{{ task.name }}</v-text>
-              <v-text v-else><s>{{ task.name }}</s></v-text>
+              <v-text v-if="!task.completed">{{ task.name}}<small class="mx-5 text-blue">{{ task.username }}</small></v-text>
+              <v-text v-else><s>{{ task.name }}<small class="mx-5 text-blue">{{ task.username }}</small></s></v-text>
               <div>
                 <v-icon class="mx-2" @click="startEditing(index)">mdi-pencil</v-icon>
                 <v-icon class="mx-2" @click="completeTask(index)" v-if="!task.completed">mdi-check-circle</v-icon>

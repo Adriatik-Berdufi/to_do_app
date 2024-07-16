@@ -8,25 +8,29 @@ export default {
   },
   methods: {
     login() {
-      if (this.username) {
-        localStorage.setItem('username', this.username)
-        this.$router.push('/')
+      if (this.username.trim()) {
+        localStorage.setItem('username', this.username.trim());
+        this.$router.push({ name: 'Home' });
       }
     },
   },
-}
+};
 </script>
-
 <template>
     <div>
-      <h1>Login</h1>
-      <v-form @submit.prevent="login">
-        <v-text-field v-model="username" label="Username"></v-text-field>
-        <v-btn type="submit">Login</v-btn>
-      </v-form>
+    <h1>Login</h1>
+    <v-form @submit.prevent="login">
+      <v-text-field 
+        label="Nome Utente" 
+        v-model="username" 
+        required
+      ></v-text-field>
+      <v-btn type="submit" color="primary">Login</v-btn>
+    </v-form>
     </div>
-  </template>
-  
-  <style scoped>
-  </style>
-  
+</template>
+
+
+
+<style scoped>
+</style>

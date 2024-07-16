@@ -41,7 +41,7 @@ export default {
         <v-list>
           <v-list-item v-for="(task, index) in store.archivedTasks" :key="index">
             <v-list-item-content class="d-flex justify-space-between">
-                <v-text>{{ task.name }}</v-text>
+                <v-text>{{ task.name }} <small class="mx-5 text-blue">{{ task.username }}</small></v-text>
                 
                 <div>
                     <!-- Pulsante per portare il task di nuovo nella to do list -->

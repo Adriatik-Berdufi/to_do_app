@@ -5,9 +5,9 @@ export const store = reactive({
   tasks: [],
   archivedTasks: [],
   editingTaskIndex: -1,
-
+  username :[],
   addTask(task) {
-    this.tasks.push({ name: task, completed: false });
+    this.tasks.push(task);
   },
 
   editTask(index, newName) {
