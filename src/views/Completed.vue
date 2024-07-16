@@ -10,11 +10,11 @@ export default {
     usernames() {
       // elenco dei username
       const users = store.archivedTasks.map(task => task.username);
-      return [...new Set(users)];
+      return ['All',...new Set(users)];
     }, filteredTasks() {
       // Filtro per urename
       return store.archivedTasks.filter(task => {
-        return (this.selectedUser ? task.username === this.selectedUser : true) &&
+        return (this.selectedUser === 'All' || task.username === this.selectedUser) &&
                (task.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
                 task.username.toLowerCase().includes(this.searchText.toLowerCase()));
       });
@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      selectedUser: '',
+      selectedUser: 'All',
       searchText: '',
     };
   },
@@ -53,8 +53,9 @@ export default {
 
 
 <template>
-    <v-container>
-      <h1>Task Completati</h1>
+  <h1 class="text-center mt-5">Task Completati</h1>
+    <v-container class="w-50">
+      
       
       <div class="d-flex">
         <!-- Select per username -->
