@@ -13,6 +13,16 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
+  //aggiunto per prob con cors policy
+  server: {
+    proxy: {
+      '/xkcd': {
+        target: 'https://xkcd.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/xkcd/, ''),
+      },
+    },
+  },
   define: {
     'process.env': process.env,
   },
