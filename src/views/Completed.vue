@@ -6,7 +6,26 @@ export default {
   computed: {
     store() {
         return store;
-    }
+    },
+    usernames() {
+      // elenco dei username
+      const users = store.archivedTasks.map(task => task.username);
+      return [...new Set(users)];
+    }, filteredTasks() {
+      // Filtro per urename
+      return store.archivedTasks.filter(task => {
+        return (this.selectedUser ? task.username === this.selectedUser : true) &&
+               (task.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+                task.username.toLowerCase().includes(this.searchText.toLowerCase()));
+      });
+    },
+
+  },
+  data() {
+    return {
+      selectedUser: '',
+      searchText: '',
+    };
   },
   methods: {
      // porta il task di nuovo nella to do list
@@ -36,10 +55,26 @@ export default {
 <template>
     <v-container>
       <h1>Task Completati</h1>
-
+      
+      <div class="d-flex">
+        <!-- Select per username -->
+        <v-select
+        v-model="selectedUser"
+        :items="usernames"
+        label="Filtra per utente"
+        ></v-select>
+      
+      <!-- filtro per username o nome del task -->
+      <v-text-field
+        v-model="searchText"
+        label="Filtra per testo"
+        outlined
+        class="ms-5"
+      ></v-text-field>
+      </div>
       <v-card>
         <v-list>
-          <v-list-item v-for="(task, index) in store.archivedTasks" :key="index">
+          <v-list-item v-for="(task, index) in filteredTasks" :key="index">
             <v-list-item-content class="d-flex justify-space-between">
                 <v-text>{{ task.name }} <small class="mx-5 text-blue">{{ task.username }}</small></v-text>
                 
